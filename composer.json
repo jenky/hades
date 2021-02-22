@@ -1,0 +1,60 @@
+{
+    "name": "jenky/hades",
+    "type": "library",
+    "description": "Error response formatter for Laravel app",
+    "keywords": [
+        "jenky",
+        "hades",
+        "laravel",
+        "api",
+        "error format"
+    ],
+    "homepage": "https://github.com/jenky/hades",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lynh",
+            "email": "contact@lynh.me",
+            "homepage": "https://github.com/jenky",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.2|^8.0",
+        "illuminate/contracts": "^7.0|^8.0",
+        "illuminate/config": "^7.0|^8.0",
+        "illuminate/support": "^7.0|^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^5.0|^6.0",
+        "phpunit/phpunit": "^8.0|^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jenky\\Hades\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Jenky\\Hades\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "check-style": "phpcs src tests",
+        "fix-style": "phpcbf src tests"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Jenky\\Hades\\HadesServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
