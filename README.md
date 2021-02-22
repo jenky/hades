@@ -47,12 +47,12 @@ If you discover any security related issues, please email contact@lynh.me instea
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/jenky/hades.svg?style=flat-square
-[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/jenky/hades/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/jenky/hades.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/jenky/hades.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/jenky/hades.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/jenky/hades.svg
+[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg
+[ico-travis]: https://img.shields.io/travis/jenky/hades/master.svg
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/jenky/hades.svg
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/jenky/hades.svg
+[ico-downloads]: https://img.shields.io/packagist/dt/jenky/hades.svg
 [ico-gh-tests]: https://github.com/jenky/hades/workflows/Tests/badge.svg
 [ico-codecov]: https://codecov.io/gh/jenky/hades/branch/master/graph/badge.svg
 
