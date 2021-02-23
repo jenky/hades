@@ -197,7 +197,7 @@ public function boot()
 }
 ```
 
-Hades will add the header `Accept: application/json` to all incoming API requests. If you want to use custom MIME type, you may use the `withMimeType` to specify the MIME type:
+Hades will add the header `Accept: application/json` to all [incoming API requests](#identify-api-requests). If you want to use custom MIME type, you may use the `withMimeType` to specify the MIME type:
 
 ```php
 Hades::forceJsonOutput()
@@ -208,7 +208,7 @@ Hades::forceJsonOutput()
 
 In order to force the response to return JSON output, Hades needs to identify the incoming request so it doesn't add the `Accept` header on your normal HTML pages.
 
-By default, all your API routes defined in `routes/api.php` have `/api` URI prefix automatically applied. Hades will inspects the incoming request URI and determines if the API request URI has the `/api` prefix.
+By default, all your API routes defined in `routes/api.php` have `/api` URI prefix automatically applied. Hades will inspects the incoming request URI and determines it's URI matches the `/api` prefix.
 
 To customize this behavior, you may pass the closure to `Hades::forceJsonOutput()` to instruct Hades how to identify the incoming request:
 
