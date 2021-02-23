@@ -83,6 +83,12 @@ class Hades
         return new static;
     }
 
+    /**
+     * Set the content negotiation MIME type.
+     *
+     * @param  string  $type
+     * @return $this
+     */
     public function withMimeType(string $type)
     {
         static::$mimeType = $type;
