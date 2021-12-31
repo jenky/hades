@@ -54,6 +54,14 @@ class FeatureTestCase extends TestCase
             'prefix' => '',
         ]);
 
+        if (! $config->get('auth.guards.api')) {
+            $config->set('auth.guards.api', [
+                'driver' => 'token',
+                'provider' => 'users',
+                'hash' => false,
+            ]);
+        }
+
         $config->set('app.debug', true);
     }
 }
