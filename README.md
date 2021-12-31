@@ -181,7 +181,7 @@ public function boot()
 
 By default, Laravel expects the request should contains header `Accept` with the MIME type `application/json` or custom MIME with `json` format such as `application/vnd.myapp.v1+json` in order to return JSON response. Otherwise your may get redirected to login page if the credentials are invalid or missing/passing invalid authorization token.
 
-While this is a good design practice, sometimes you may wish to attach the header to request automatically. To do this, you should call the `Hades::forceJsonOutput()` method within the `boot` method of your `App\Providers\AuthServiceProvider`.
+While this is a good design practice, sometimes you may wish to attach the header to request automatically. To do this, you should call the `Hades::forceJsonOutput()` method within the `boot` method of your `App\Providers\AppServiceProvider`.
 
 ```php
 use Jenky\Hades\Hades;
