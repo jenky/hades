@@ -71,7 +71,7 @@ curl --location --request GET 'http://myapp.test/api/user' \
 
 ###
 
-If you would like to use different error format for your application, you should call the `Hades::errorFormat()` method in the `boot` method of your `App\Providers\AuthServiceProvider` class:
+If you would like to use different error format for your application, you should call the `Hades::errorFormat()` method in the `boot` method of your `App\Providers\AppServiceProvider` class:
 
 ```php
 use Jenky\Hades\Hades;
