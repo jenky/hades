@@ -21,7 +21,12 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Security
 - Nothing -->
 
-## 1.0.1 - 2021-12-31
+## [1.0.1](https://github.com/jenky/hades/compare/1.0.0...1.0.1) - 2021-12-31
 
 ### Fixed
 - Make sure all the test case are passed.
+
+## [1.1.0](https://github.com/jenky/hades/compare/1.0.1...1.1.0) - 2022-02-10
+
+### Added
+- Add support for Laravel 9.
