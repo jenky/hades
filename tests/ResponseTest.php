@@ -140,7 +140,7 @@ class ResponseTest extends FeatureTestCase
             $this->postJson('api/v1/register')
             ->assertStatus(422)
             ->assertJson([
-                // 'message' => 'The given data was invalid.',
+                // 'message' => 'The given data was invalid.', // Don't assert against message since Laravel 9.0 use new validation error message format.
                 'status_code' => 422,
                 'type' => 'ValidationException',
             ])
