@@ -36,7 +36,9 @@ trait FormatsException
     public function toJsonResponse(Throwable $exception, ?int $statusCode = null, array $headers = [])
     {
         $replacements = $this->prepareReplacements(
-            $exception, $statusCode, $headers
+            $exception,
+            $statusCode,
+            $headers
         );
 
         $response = Hades::errorFormat();
@@ -108,7 +110,8 @@ trait FormatsException
     {
         $trace = $this->config('hades.debug.trace_as_string', false)
             ? explode("\n", $e->getTraceAsString())
-            : ($this->config('hades.debug.trace_args', false)
+            : (
+                $this->config('hades.debug.trace_args', false)
                 ? $e->getTrace()
                 : array_map(function ($item) {
                     return Arr::except($item, ['args']);

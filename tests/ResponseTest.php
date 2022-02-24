@@ -66,7 +66,7 @@ class ResponseTest extends FeatureTestCase
                 });
 
                 Route::put('post', function () {
-                    throw new \InvalidArgumentException;
+                    throw new \InvalidArgumentException();
                 });
 
                 Route::get('internal-error', function () {
@@ -83,7 +83,7 @@ class ResponseTest extends FeatureTestCase
             });
 
         Route::get('exception', function () {
-            throw new \Exception;
+            throw new \Exception();
         });
     }
 
@@ -137,7 +137,7 @@ class ResponseTest extends FeatureTestCase
                 'q',
             ]);
 
-            $this->postJson('api/v1/register')
+        $this->postJson('api/v1/register')
             ->assertStatus(422)
             ->assertJson([
                 // 'message' => 'The given data was invalid.', // Don't assert against message since Laravel 9.0 use new validation error message format.

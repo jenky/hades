@@ -37,7 +37,7 @@ class CustomExceptionTest extends FeatureTestCase
                 });
 
                 Route::get('exception-callback', function () {
-                    throw new AuthenticationException;
+                    throw new AuthenticationException();
                 });
             });
     }
