@@ -47,7 +47,7 @@ trait FormatsException
             }
         });
 
-        /** @var \Symfony\Component\ErrorHandler\Exception\FlattenException $exception */
+        /* @var \Symfony\Component\ErrorHandler\Exception\FlattenException $exception */
         return new JsonResponse(
             $this->removeEmptyReplacements($response),
             $exception->getStatusCode(),
