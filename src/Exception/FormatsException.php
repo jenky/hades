@@ -36,9 +36,7 @@ trait FormatsException
     public function toJsonResponse(Throwable $exception, ?int $statusCode = null, array $headers = [])
     {
         $replacements = $this->prepareReplacements(
-            $exception,
-            $statusCode,
-            $headers
+            $exception, $statusCode, $headers
         );
 
         $response = Hades::errorFormat();

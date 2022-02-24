@@ -80,7 +80,7 @@ class Hades
 
         static::$jsonOutput = true;
 
-        return new static();
+        return new static;
     }
 
     /**
@@ -110,6 +110,6 @@ class Hades
 
         static::$errorFormat = $format;
 
-        return new static();
+        return new static;
     }
 }
