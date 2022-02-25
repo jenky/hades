@@ -217,7 +217,7 @@ class ResponseTest extends FeatureTestCase
 
         Hades::forceJsonOutput(function (Request $request) {
             return true;
-        })->withMimeType('application/vnd.hades.v1+json');
+        })->mime('application/vnd.hades.v1+json');
 
         $this->get('exception')
             ->assertStatus(500)
