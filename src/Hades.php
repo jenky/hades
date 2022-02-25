@@ -97,6 +97,17 @@ class Hades
     }
 
     /**
+     * Set the content negotiation MIME type.
+     *
+     * @param  string  $type
+     * @return $this
+     */
+    public function mime(string $type)
+    {
+        return $this->withMimeType($type);
+    }
+
+    /**
      * Get or set the error response format.
      *
      * @param  array  $format
