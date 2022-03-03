@@ -1,7 +1,7 @@
 # Hades
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
-[![Test Status][ico-gh-tests]][link-gh-tests]
+[![Github Actions][ico-gh-actions]][link-gh-actions]
 [![Codecov][ico-codecov]][link-codecov]
 [![Total Downloads][ico-downloads]][link-downloads]
 [![Software License][ico-license]](LICENSE.md)
@@ -43,7 +43,7 @@ By default all thrown exceptions will be transformed to the following format:
     'message' => ':message', // The exception message
     'type' => ':type', // The exception type, default to exception class name
     'status_code' => ':status_code', // The corresponding HTTP status code, default to 500
-    'errors' => ':errors', // The error bag, usually validation error
+    'errors' => ':errors', // The error bag, typically validation error messages
     'code' => ':code', // The exception code
     'debug' => ':debug', // The debug information
 }
@@ -181,7 +181,7 @@ public function boot()
 
 By default, Laravel expects the request should contains header `Accept` with the MIME type `application/json` or custom MIME with `json` format such as `application/vnd.myapp.v1+json` in order to return JSON response. Otherwise your may get redirected to login page if the credentials are invalid or missing/passing invalid authorization token.
 
-While this is a good design practice, sometimes you may wish to attach the header to request automatically. To do this, you should call the `Hades::forceJsonOutput()` method within the `boot` method of your `App\Providers\AppServiceProvider`.
+While this is a good design practice, sometimes you may wish to attach the header to request automatically, such as using Laravel as pure API backend. To do this, you should call the `Hades::forceJsonOutput()` method within the `boot` method of your `App\Providers\AppServiceProvider`.
 
 ```php
 use Jenky\Hades\Hades;
@@ -247,14 +247,14 @@ If you discover any security related issues, please email contact@lynh.me instea
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/jenky/hades.svg
-[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg
-[ico-travis]: https://img.shields.io/travis/jenky/hades/master.svg
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/jenky/hades.svg
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/jenky/hades.svg
-[ico-downloads]: https://img.shields.io/packagist/dt/jenky/hades.svg
-[ico-gh-tests]: https://github.com/jenky/hades/workflows/Tests/badge.svg
-[ico-codecov]: https://codecov.io/gh/jenky/hades/branch/master/graph/badge.svg
+[ico-version]: https://img.shields.io/packagist/v/jenky/hades.svg?logo=packagist&style=for-the-badge
+[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=for-the-badge
+[ico-travis]: https://img.shields.io/travis/jenky/hades/master.svg?style=for-the-badge
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/jenky/hades.svg?style=for-the-badge
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/jenky/hades.svg?style=for-the-badge
+[ico-downloads]: https://img.shields.io/packagist/dt/jenky/hades.svg?style=for-the-badge
+[ico-gh-actions]: https://img.shields.io/github/workflow/status/jenky/hades/Tests?label=actions&logo=github&style=for-the-badge
+[ico-codecov]: https://img.shields.io/codecov/c/github/jenky/hades?logo=codecov&style=for-the-badge
 
 [link-packagist]: https://packagist.org/packages/jenky/hades
 [link-travis]: https://travis-ci.org/jenky/hades
@@ -263,5 +263,5 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-downloads]: https://packagist.org/packages/jenky/hades
 [link-author]: https://github.com/jenky
 [link-contributors]: ../../contributors
-[link-gh-tests]: https://github.com/jenky/hades/actions
+[link-gh-actions]: https://github.com/jenky/hades/actions
 [link-codecov]: https://codecov.io/gh/jenky/hades
