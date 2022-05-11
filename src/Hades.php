@@ -68,7 +68,7 @@ class Hades
     /**
      * Indicates that the response should always return JSON output.
      *
-     * @param  null|string  $contentType
+     * @param  null|\Closure  $when
      * @return static
      */
     public static function forceJsonOutput(?Closure $when = null)
