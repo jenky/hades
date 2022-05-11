@@ -41,7 +41,8 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit"
+        "test": "vendor/bin/phpunit",
+        "analyze": "vendor/bin/phpstan analyze"
     },
     "extra": {
         "branch-alias": {
