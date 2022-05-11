@@ -37,8 +37,8 @@ class IdentifyRequest
      */
     protected function wantsJson(Request $request): bool
     {
-        // We can't use $request->wantsJson() because it will
-        // cache the Accept header for subsequent check.
+        // We can't use $request->wantsJson() here because it will cache the
+        // Accept header for subsequent check.
         return Str::contains($request->header('Accept'), ['/json', '+json']);
     }
 }
