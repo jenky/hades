@@ -253,7 +253,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/jenky/hades.svg?style=for-the-badge
 [ico-code-quality]: https://img.shields.io/scrutinizer/g/jenky/hades.svg?style=for-the-badge
 [ico-downloads]: https://img.shields.io/packagist/dt/jenky/hades.svg?style=for-the-badge
-[ico-gh-actions]: https://img.shields.io/github/workflow/status/jenky/hades/Tests?label=actions&logo=github&style=for-the-badge
+[ico-gh-actions]: https://img.shields.io/github/actions/workflow/status/jenky/hades/testing.yml?branch=master&label=actions&logo=github&style=for-the-badge
 [ico-codecov]: https://img.shields.io/codecov/c/github/jenky/hades?logo=codecov&style=for-the-badge
 
 [link-packagist]: https://packagist.org/packages/jenky/hades
