@@ -21,6 +21,14 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Security
 - Nothing -->
 
+## [2.0.0](https://github.com/jenky/hades/compare/1.1.1...2.0.0) - 2023-02-15
+
+### Added
+- Laravel 10 support.
+
+### Removed
+- Drop support for Laravel 7 and 8.
+
 ## [1.1.1](https://github.com/jenky/hades/compare/1.1.0...1.1.1) - 2022-09-30
 
 ### Fixed
