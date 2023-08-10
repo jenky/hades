@@ -92,29 +92,6 @@ public function boot()
 
 ## Formatting Exception Response
 
-### Customizing Exception Type
-
-When converting the exception to it's JSON representation, Hades will use the exception class name as the `type`. However, you may customize this behavior by defining a `getType` method on your exception:
-
-```php
-<?php
-
-namespace App\Exceptions;
-
-class MissingValueException extends \Exception
-{
-    /**
-     * Get the exception type.
-     *
-     * @return string
-     */
-    public function getType(): string
-    {
-        return 'invalid_value';
-    }
-}
-```
-
 ### Customizing Exception Response
 
 Sometimes you can't control how exception is thrown such as exception from Laravel framework or other third party packages. Laravel 8 introduces [Renderable exception](https://laravel.com/docs/8.x/errors#rendering-exceptions), however you need to build the response manually which might lead to inconsistent error format.
@@ -215,7 +192,7 @@ To customize this behavior, you may pass the closure to `Hades::forceJsonOutput(
 ```php
 use Illuminate\Http\Request;
 
-Hades::forceJsonOutput(function (Request $request) {
+Hades::forceJsonOutput(static function (Request $request) {
     return $request->is('api/v1/*');
 });
 ```
