@@ -12,8 +12,6 @@ class CustomExceptionTest extends FeatureTestCase
 {
     /**
      * Setup the test environment.
-     *
-     * @return void
      */
     protected function setUp(): void
     {
