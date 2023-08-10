@@ -30,8 +30,7 @@ class CustomExceptionTest extends FeatureTestCase
         Route::prefix('api/v1')
             ->group(function () {
                 Route::get('exception-type', function () {
-                    throw (new OauthException(400, 'The grant type is not available for your client!'))
-                        ->setType('oauth');
+                    throw (new OauthException(400, 'The grant type is not available for your client!'));
                 });
 
                 Route::get('exception-callback', function () {
@@ -47,7 +46,7 @@ class CustomExceptionTest extends FeatureTestCase
             ->assertJson([
                 'message' => 'The grant type is not available for your client!',
                 'status_code' => 400,
-                'type' => 'oauth',
+                'type' => 'OauthException',
             ]);
     }
 

@@ -71,7 +71,7 @@ trait FormatsException
         $replacements = [
             ':message' => $e->getMessage() ?: $e->getStatusText(),
             ':status_code' => $e->getStatusCode(),
-            ':type' => method_exists($exception, 'getType') ? $exception->getType() : class_basename($e->getClass()),
+            ':type' => class_basename($e->getClass()),
             ':code' => $e->getCode(),
         ];
 
