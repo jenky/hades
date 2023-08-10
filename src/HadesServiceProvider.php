@@ -10,21 +10,18 @@ class HadesServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/hades.php', 'hades');
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
+        // @phpstan-ignore-next-line
         $this->app[Kernel::class]->prependMiddleware(IdentifyRequest::class);
 
         $this->registerPublishing();
@@ -32,10 +29,8 @@ class HadesServiceProvider extends ServiceProvider
 
     /**
      * Register the package's publishable resources.
-     *
-     * @return void
      */
-    protected function registerPublishing()
+    protected function registerPublishing(): void
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([

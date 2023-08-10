@@ -16,8 +16,7 @@ trait HandlesExceptionResponse
     /**
      * Convert an authentication exception into an unauthenticated response.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Illuminate\Auth\AuthenticationException $e
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     protected function unauthenticated($request, AuthenticationException $e)
@@ -32,8 +31,7 @@ trait HandlesExceptionResponse
     /**
      * Create a response object from the given validation exception.
      *
-     * @param  \Illuminate\Validation\ValidationException $e
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function convertValidationExceptionToResponse(ValidationException $e, $request)
@@ -49,7 +47,6 @@ trait HandlesExceptionResponse
      * Prepare a JSON response for the given exception.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable $e
      * @return \Illuminate\Http\JsonResponse
      */
     protected function prepareJsonResponse($request, Throwable $e)
@@ -60,9 +57,7 @@ trait HandlesExceptionResponse
     /**
      * Determine if the current request expects a JSON response.
      *
-     * @param  \Illuminate\Http\Request $request
      * @param  \Symfony\Component\HttpFoundation\Response
-     * @return bool
      */
     protected function expectsJson(Request $request, Response $response): bool
     {

@@ -26,6 +26,7 @@
         "illuminate/support": "^9.0|^10.0"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.10",
         "nunomaduro/larastan": "^2.4",
         "orchestra/testbench": "^7.0|^8.0",
         "phpunit/phpunit": "^9.0|^10.0"
@@ -41,8 +42,23 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit",
-        "analyze": "vendor/bin/phpstan analyze"
+        "analyse": [
+            "vendor/bin/phpstan analyse"
+        ],
+        "cs": [
+            "vendor/bin/php-cs-fixer fix"
+        ],
+        "test": [
+            "vendor/bin/phpunit"
+        ],
+        "coverage": [
+            "vendor/bin/phpunit --coverage"
+        ],
+        "check": [
+            "@cs --dry-run",
+            "@analyse",
+            "@test"
+        ]
     },
     "extra": {
         "branch-alias": {

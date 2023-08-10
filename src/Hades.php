@@ -5,35 +5,31 @@ namespace Jenky\Hades;
 use Closure;
 use Illuminate\Http\Request;
 
-class Hades
+final class Hades
 {
     /**
      * The request identifier callback.
      *
-     * @var \Closure
+     * @var \Closure|null
      */
-    protected static $requestIdentifier;
+    private static $requestIdentifier;
 
     /**
      * Indicates that the response should always return JSON output.
-     *
-     * @var bool
      */
-    public static $jsonOutput = false;
+    public static bool $jsonOutput = false;
 
     /**
      * The default content negotiation MIME type.
-     *
-     * @var string
      */
-    public static $mimeType = 'application/json';
+    public static string $mimeType = 'application/json';
 
     /**
      * Generic error response format.
      *
-     * @var array
+     * @var array<string, mixed>
      */
-    public static $errorFormat = [
+    protected static $errorFormat = [
         'message' => ':message',
         'type' => ':type',
         'status_code' => ':status_code',
@@ -44,73 +40,58 @@ class Hades
 
     /**
      * Get the request identifier.
-     *
-     * @return \Closure
      */
-    public static function requestIdentifier(): Closure
+    private static function requestIdentifier(): Closure
     {
-        return static::$requestIdentifier ?: function (Request $request) {
+        return self::$requestIdentifier ?: static function (Request $request) {
             return $request->segment(1) === 'api';
         };
     }
 
     /**
      * Determines if the request is API request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return bool
      */
     public static function identify(Request $request): bool
     {
-        return call_user_func(static::requestIdentifier(), $request);
+        return call_user_func(self::requestIdentifier(), $request);
     }
 
     /**
      * Indicates that the response should always return JSON output.
      *
-     * @param  null|\Closure  $when
-     * @return static
+     * @param  \Closure(Request): bool  $when
      */
-    public static function forceJsonOutput(?Closure $when = null)
+    public static function forceJsonOutput(Closure $when = null): static
     {
         if ($when) {
             // Set the callback that will be used to identify the current request.
-            static::$requestIdentifier = $when;
+            self::$requestIdentifier = $when;
         }
 
-        static::$jsonOutput = true;
+        self::$jsonOutput = true;
 
-        return new static();
+        return new self();
     }
 
     /**
      * Set the content negotiation MIME type.
-     *
-     * @param  string  $type
-     * @return $this
      */
-    public function withMimeType(string $type)
+    public function withMimeType(string $type): void
     {
         static::$mimeType = $type;
-
-        return $this;
     }
 
     /**
      * Set the content negotiation MIME type.
-     *
-     * @param  string  $type
-     * @return $this
      */
-    public function mime(string $type)
+    public function mime(string $type): void
     {
-        return $this->withMimeType($type);
+        $this->withMimeType($type);
     }
 
     /**
      * Get or set the error response format.
      *
-     * @param  array  $format
      * @return array|static
      */
     public static function errorFormat(array $format = [])

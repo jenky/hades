@@ -15,17 +15,13 @@ trait HasType
      * @param  string
      * @return $this
      */
-    public function setType(string $type)
+    public function setType(string $type): void
     {
         $this->type = $type;
-
-        return $this;
     }
 
     /**
      * Get exception type.
-     *
-     * @return string
      */
     public function getType(): string
     {

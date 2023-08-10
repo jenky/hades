@@ -21,19 +21,24 @@ trait FormatsException
     /**
      * The registered exception callbacks.
      *
-     * @var array
+     * @var array<class-string, callable>
      */
     protected $exceptionCallbacks = [];
+
+    /**
+     * The exception error replacements.
+     *
+     * @var array<string, mixed>
+     */
+    protected $replacements = [];
 
     /**
      * Map exception into an JSON response.
      *
      * @param  \Throwable  $e
-     * @param  int|null  $statusCode
-     * @param  array  $headers
      * @return \Illuminate\Http\JsonResponse
      */
-    public function toJsonResponse(Throwable $exception, ?int $statusCode = null, array $headers = [])
+    public function toJsonResponse(Throwable $exception, int $statusCode = null, array $headers = [])
     {
         $replacements = $this->prepareReplacements(
             $exception, $statusCode, $headers
@@ -47,7 +52,7 @@ trait FormatsException
             }
         });
 
-        /* @var \Symfony\Component\ErrorHandler\Exception\FlattenException $exception */
+        /** @var FlattenException $exception */
         return new JsonResponse(
             $this->removeEmptyReplacements($response),
             $exception->getStatusCode(),
@@ -58,13 +63,8 @@ trait FormatsException
 
     /**
      * Prepare the replacements array by gathering the keys and values.
-     *
-     * @param  \Throwable  $exception
-     * @param  int|null  $statusCode
-     * @param  array  $headers
-     * @return array
      */
-    protected function prepareReplacements(Throwable &$exception, ?int $statusCode = null, array $headers = []): array
+    protected function prepareReplacements(Throwable &$exception, int $statusCode = null, array $headers = []): array
     {
         $e = FlattenException::createFromThrowable($exception, $statusCode, $headers);
 
@@ -87,8 +87,8 @@ trait FormatsException
             $replacements[':debug'] = $this->appendDebugInformation($e);
         }
 
-        foreach ($this->exceptionCallbacks as $callback) {
-            if (is_a($exception, $this->firstClosureParameterType($callback))) {
+        foreach ($this->exceptionCallbacks as $th => $callback) {
+            if (is_a($exception, $th, true)) {
                 $callback($exception, $this);
             }
         }
@@ -100,9 +100,6 @@ trait FormatsException
 
     /**
      * Appends debug information.
-     *
-     * @param  \Symfony\Component\ErrorHandler\Exception\FlattenException  $e
-     * @return array
      */
     protected function appendDebugInformation(FlattenException $e): array
     {
@@ -130,9 +127,6 @@ trait FormatsException
 
     /**
      * Recursively remove any empty replacement values in the response array.
-     *
-     * @param  array  $input
-     * @return array
      */
     protected function removeEmptyReplacements(array $input): array
     {
@@ -153,8 +147,6 @@ trait FormatsException
 
     /**
      * Determines if the application are running in debug mode.
-     *
-     * @return bool
      */
     protected function runningInDebugMode(): bool
     {
@@ -163,8 +155,6 @@ trait FormatsException
 
     /**
      * Determines if the application are running in production environment.
-     *
-     * @return bool
      */
     protected function runningInProduction(): bool
     {
@@ -185,18 +175,15 @@ trait FormatsException
 
     /**
      * Get user defined replacements.
-     *
-     * @return array
      */
     public function getReplacements(): array
     {
-        return property_exists($this, 'replacements') ? $this->replacements : [];
+        return $this->replacements;
     }
 
     /**
      * Set user defined replacements.
      *
-     * @param  array  $replacements
      * @return $this
      */
     public function setReplacements(array $replacements)
@@ -209,7 +196,6 @@ trait FormatsException
     /**
      * Replace given key with value.
      *
-     * @param  string  $key
      * @param  mixed  $value
      * @return $this
      */
@@ -224,12 +210,11 @@ trait FormatsException
      * Register callback for given exception.
      *
      * @param  \Closure|string  $exception
-     * @param  \Closure|null  $callback
      * @return $this
      *
      * @throws \InvalidArgumentException
      */
-    public function catch($exception, ?Closure $callback = null)
+    public function catch($exception, Closure $callback = null)
     {
         if (is_callable($exception) && is_null($callback)) {
             $exception = $this->firstClosureParameterType($callback = $exception);

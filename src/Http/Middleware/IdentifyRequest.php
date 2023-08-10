@@ -12,11 +12,9 @@ class IdentifyRequest
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         if (Hades::$jsonOutput &&
             Hades::identify($request) &&
@@ -31,9 +29,6 @@ class IdentifyRequest
 
     /**
      * Determine if the current request is asking for JSON.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return bool
      */
     protected function wantsJson(Request $request): bool
     {
