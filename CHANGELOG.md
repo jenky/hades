@@ -20,6 +20,14 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ### Security
 - Nothing -->
+## 2.2.0 - 2024-04-15
+
+### Added
+
+- Laravel 11 support.
+
+**Full Changelog**: https://github.com/jenky/hades/compare/2.1.0...2.2.0
+
 ## 2.1.0 - 2023-08-10
 
 ### Fixed
