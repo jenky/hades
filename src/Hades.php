@@ -53,7 +53,7 @@ final class Hades
      */
     public static function identify(Request $request): bool
     {
-        return call_user_func(self::requestIdentifier(), $request);
+        return self::requestIdentifier()($request);
     }
 
     /**
@@ -61,7 +61,7 @@ final class Hades
      *
      * @param  \Closure(Request): bool  $when
      */
-    public static function forceJsonOutput(Closure $when = null): static
+    public static function forceJsonOutput(Closure $when = null): self
     {
         if ($when) {
             // Set the callback that will be used to identify the current request.
