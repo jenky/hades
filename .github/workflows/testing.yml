@@ -11,7 +11,7 @@ jobs:
       matrix:
         # os: [ubuntu-latest, windows-latest]
         os: [ubuntu-latest]
-        php: [8.0, 8.1, 8.2, 8.3]
+        php: [8.0, 8.1, 8.2, 8.3, 8.4]
         laravel: [9.*, 10.*, 11.*]
         include:
           - laravel: 9.*
@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Cache dependencies
         uses: actions/cache@v3
@@ -55,4 +55,6 @@ jobs:
         run: vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
