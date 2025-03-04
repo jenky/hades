@@ -5,10 +5,8 @@ namespace Jenky\Hades\Tests;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\Facades\Route;
-use Jenky\Hades\Tests\Fixtures\OauthException;
-use Throwable;
 
-class CustomExceptionTest extends FeatureTestCase
+final class CustomExceptionTest extends FeatureTestCase
 {
     /**
      * Setup the test environment.
@@ -20,17 +18,12 @@ class CustomExceptionTest extends FeatureTestCase
         $this->loadRoutes();
     }
 
-    /**
-     * Set up routes.
-     *
-     * @return void
-     */
-    protected function loadRoutes()
+    private function loadRoutes(): void
     {
         Route::prefix('api/v1')
             ->group(function () {
                 Route::get('exception-type', function () {
-                    throw (new OauthException(400, 'The grant type is not available for your client!'));
+                    throw (new OauthException(400, 'The grant type is not available for your client!', code: 100));
                 });
 
                 Route::get('exception-callback', function () {
@@ -45,8 +38,8 @@ class CustomExceptionTest extends FeatureTestCase
             ->assertStatus(400)
             ->assertJson([
                 'message' => 'The grant type is not available for your client!',
-                'status_code' => 400,
-                'type' => 'OauthException',
+                'status' => 400,
+                // 'code' => 100,
             ]);
     }
 
@@ -56,36 +49,18 @@ class CustomExceptionTest extends FeatureTestCase
             ->assertStatus(401)
             ->assertJson([
                 'message' => 'Unauthenticated.',
-                'type' => 'AuthenticationException',
-                'status_code' => 401,
+                // 'code' => 0,
+                'status' => 401,
             ]);
 
-        $this->app->make(ExceptionHandler::class)->catch(AuthenticationException::class, function (Throwable $e, $handler) {
-            $handler->replace('type', 'authentication_error')
-                ->replace('message', 'Authentication failed.');
-        });
+        $this->app->make(ExceptionHandler::class)->map(AuthenticationException::class, static fn () => new AuthenticationException('Authentication failed.'));
 
         $this->getJson('api/v1/exception-callback')
             ->assertStatus(401)
             ->assertJson([
                 'message' => 'Authentication failed.',
-                'type' => 'authentication_error',
-                'status_code' => 401,
-            ]);
-
-        $this->app->make(ExceptionHandler::class)->catch(function (AuthenticationException $e, $handler) {
-            $handler->setReplacements([
-                ':code' => 1001,
-                ':type' => 'invalid_credentials',
-            ]);
-        });
-
-        $this->getJson('api/v1/exception-callback')
-            ->assertStatus(401)
-            ->assertJson([
-                'code' => 1001,
-                'type' => 'invalid_credentials',
-                'status_code' => 401,
+                // 'code' => 0,
+                'status' => 401,
             ]);
     }
 }

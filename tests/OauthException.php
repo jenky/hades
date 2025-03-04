@@ -1,6 +1,6 @@
 <?php
 
-namespace Jenky\Hades\Tests\Fixtures;
+namespace Jenky\Hades\Tests;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 

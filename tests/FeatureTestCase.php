@@ -2,9 +2,7 @@
 
 namespace Jenky\Hades\Tests;
 
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Jenky\Hades\HadesServiceProvider;
-use Jenky\Hades\Tests\Fixtures\ExceptionHandler as Handler;
 use Orchestra\Testbench\TestCase;
 
 class FeatureTestCase extends TestCase
@@ -20,17 +18,6 @@ class FeatureTestCase extends TestCase
         return [
             HadesServiceProvider::class,
         ];
-    }
-
-    /**
-     * Resolve application HTTP exception handler.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
-     */
-    protected function resolveApplicationExceptionHandler($app)
-    {
-        $app->singleton(ExceptionHandler::class, Handler::class);
     }
 
     /**

@@ -25,20 +25,6 @@ final class Hades
     public static string $mimeType = 'application/json';
 
     /**
-     * Generic error response format.
-     *
-     * @var array<string, mixed>
-     */
-    protected static $errorFormat = [
-        'message' => ':message',
-        'type' => ':type',
-        'status_code' => ':status_code',
-        'errors' => ':errors',
-        'code' => ':code',
-        'debug' => ':debug',
-    ];
-
-    /**
      * Get the request identifier.
      */
     private static function requestIdentifier(): Closure
@@ -59,9 +45,9 @@ final class Hades
     /**
      * Indicates that the response should always return JSON output.
      *
-     * @param  \Closure(Request): bool  $when
+     * @param  null|\Closure(Request): bool  $when
      */
-    public static function forceJsonOutput(Closure $when = null): self
+    public static function forceJsonOutput(?Closure $when = null): self
     {
         if ($when) {
             // Set the callback that will be used to identify the current request.
@@ -87,21 +73,5 @@ final class Hades
     public function mime(string $type): void
     {
         $this->withMimeType($type);
-    }
-
-    /**
-     * Get or set the error response format.
-     *
-     * @return array|static
-     */
-    public static function errorFormat(array $format = [])
-    {
-        if (empty($format)) {
-            return static::$errorFormat;
-        }
-
-        static::$errorFormat = $format;
-
-        return new static();
     }
 }

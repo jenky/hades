@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Jenky\Hades\Hades;
 
-class ResponseTest extends FeatureTestCase
+final class ErrorResponseTest extends FeatureTestCase
 {
     use WithFaker;
 
@@ -36,12 +36,7 @@ class ResponseTest extends FeatureTestCase
         $this->loadRoutes();
     }
 
-    /**
-     * Set up routes.
-     *
-     * @return void
-     */
-    protected function loadRoutes()
+    private function loadRoutes(): void
     {
         Route::prefix('api/v1')
             ->group(function () {
@@ -85,14 +80,13 @@ class ResponseTest extends FeatureTestCase
         });
     }
 
-    /**
-     * Get error response structure.
-     *
-     * @return array
-     */
-    protected function getJsonStructure()
+    private function getJsonStructure()
     {
-        $structure = Hades::errorFormat();
+        $structure = [
+            'message' => '{title}',
+            'status' => '{status_code}',
+            'debug' => '{debug}',
+        ];
 
         if (! $this->app['config']->get('app.debug')) {
             Arr::forget($structure, 'debug');
@@ -107,8 +101,7 @@ class ResponseTest extends FeatureTestCase
             ->assertStatus(401)
             ->assertJson([
                 'message' => 'Unauthenticated.',
-                'status_code' => 401,
-                'type' => 'AuthenticationException',
+                'status' => 401,
             ]);
     }
 
@@ -121,8 +114,7 @@ class ResponseTest extends FeatureTestCase
             ->assertNotFound()
             ->assertJsonStructure(array_keys($structure))
             ->assertJson([
-                'type' => 'NotFoundHttpException',
-                'status_code' => 404,
+                'status' => 404,
             ]);
     }
 
@@ -138,9 +130,7 @@ class ResponseTest extends FeatureTestCase
         $this->postJson('api/v1/register')
             ->assertStatus(422)
             ->assertJson([
-                // 'message' => 'The given data was invalid.', // Don't assert against message since Laravel 9.0 use new validation error message format.
-                'status_code' => 422,
-                'type' => 'ValidationException',
+                'status' => 422,
             ])
             ->assertJsonValidationErrors([
                 'email', 'name', 'password',
@@ -163,8 +153,8 @@ class ResponseTest extends FeatureTestCase
             ->assertStatus(500)
             ->assertJsonStructure(array_keys($structure))
             ->assertJson([
-                'type' => 'HttpException',
-                'status_code' => 500,
+                'message' => 'Internal Server Error',
+                'status' => 500,
             ]);
     }
 
@@ -174,8 +164,7 @@ class ResponseTest extends FeatureTestCase
             ->assertForbidden()
             ->assertJson([
                 'message' => 'Forbidden',
-                'status_code' => 403,
-                'type' => 'HttpException',
+                'status' => 403,
             ]);
     }
 
@@ -185,8 +174,7 @@ class ResponseTest extends FeatureTestCase
             ->assertStatus(500)
             ->assertJson([
                 'message' => 'Internal Server Error',
-                'status_code' => 500,
-                'type' => 'InvalidArgumentException',
+                'status' => 500,
             ]);
     }
 
@@ -206,8 +194,7 @@ class ResponseTest extends FeatureTestCase
             ->assertUnauthorized()
             ->assertJson([
                 'message' => 'Unauthenticated.',
-                'status_code' => 401,
-                'type' => 'AuthenticationException',
+                'status' => 401,
             ]);
 
         $this->get('exception')
@@ -221,23 +208,7 @@ class ResponseTest extends FeatureTestCase
             ->assertStatus(500)
             ->assertJson([
                 'message' => 'Internal Server Error',
-                'status_code' => 500,
-                'type' => 'Exception',
-            ]);
-    }
-
-    public function test_custom_error_format()
-    {
-        Hades::errorFormat([
-            'message' => ':message',
-            'code' => ':code',
-        ]);
-
-        $this->getJson('api/v1/user')
-            ->assertUnauthorized()
-            ->assertExactJson([
-                'message' => 'Unauthenticated.',
-                'code' => 0,
+                'status' => 500,
             ]);
     }
 }
