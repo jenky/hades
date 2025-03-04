@@ -16,22 +16,6 @@ You may use Composer to install this package into your Laravel project:
 $ composer require jenky/hades
 ```
 
-After installing Hades, add the trait `HandlesExceptionResponse` to your `app/Exceptions/Handler` and Hades will automatically catches the thrown exception and will convert it into its JSON representation.
-
-``` php
-<?php
-
-namespace App\Exceptions;
-
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Jenky\Hades\Exception\HandlesExceptionResponse;
-
-class Handler extends ExceptionHandler
-{
-    use HandlesExceptionResponse;
-}
-```
-
 ## Configuration
 
 ### Generic Error Response Format
@@ -41,8 +25,7 @@ By default all thrown exceptions will be transformed to the following format:
 ```js
 {
     'message' => ':message', // The exception message
-    'type' => ':type', // The exception type, default to exception class name
-    'status_code' => ':status_code', // The corresponding HTTP status code, default to 500
+    'status' => ':status_code', // The corresponding HTTP status code, default to 500
     'errors' => ':errors', // The error bag, typically validation error messages
     'code' => ':code', // The exception code
     'debug' => ':debug', // The debug information
@@ -62,14 +45,14 @@ curl --location --request GET 'http://myapp.test/api/user' \
 {
   "message": "Unauthenticated.",
   "type": "AuthenticationException",
-  "status_code": 401,
+  "status": 401,
   "code": 0,
 }
 ```
 
 > Any keys that aren't replaced with corresponding values will be removed from the final response.
 
-###
+## Formatting Exception
 
 If you would like to use different error format for your application, you should call the `Hades::errorFormat()` method in the `boot` method of your `App\Providers\AppServiceProvider` class:
 
@@ -90,69 +73,39 @@ public function boot()
 }
 ```
 
-## Formatting Exception Response
-
 ### Customizing Exception Response
 
-Sometimes you can't control how exception is thrown such as exception from Laravel framework or other third party packages. Laravel 8 introduces [Renderable exception](https://laravel.com/docs/8.x/errors#rendering-exceptions), however you need to build the response manually which might lead to inconsistent error format.
+Hades uses [`api-error`](https://github.com/jenky/api-error) internally. Please see the [exception transformations](https://github.com/jenky/api-error?tab=readme-ov-file#exception-transformations) to see how it works.
 
-Hades allows you to register custom closures to replace all the values in the response format. You may accomplish this via the `catch` method of your `app\Exceptions\Handler`, Laravel will deduce what type of exception the closure renders by examining the type-hint of the closure:
+To add a custom transformers, you can use the config file
 
 ```php
-use App\Exceptions\InvalidOrderException;
+// configs/hades.php
 
-/**
- * Register the exception handling callbacks for the application.
- *
- * @return void
- */
-public function register()
-{
-    $this->catch(function (InvalidOrderException $e) {
-        $this->replace('type', 'order_exception')
-            ->replace('code', 1001);
-    });
-}
+return [
 
+    'transformers' => [
+        App\Exceptions\Transformers\MyCustomTransformer::class,
+    ],
+
+];
 ```
 
-Prior to Laravel 8, `register` had not been available in the `app\Exceptions\Handler` yet. However you can implement the method yourself:
+Alternatively, if Laravel can't inject your custom exception transformer, you may wish to register the exception transformer with the `api_error.exception_transformer` tag in your service provider. Typically, you should call this method from the `register` method of your application's `App\Providers\AppServiceProvider` class:
 
 ```php
-use Illuminate\Contracts\Container\Container;
-
-/**
- * {@inheritdoc}
- */
-public function __construct(Container $container)
-{
-    parent::__construct($container);
-
-    $this->register();
-}
-```
-
-If you don't want to modify the exception handler, you may wish to register the exception callback in your  service provider. Typically, you should call this method from the `boot` method of your application's `App\Providers\AppServiceProvider` class:
-
-```php
-use App\Exceptions\InvalidOrderException;
+use App\Exceptions\Transformers\MyCustomTransformer;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 
-/**
- * Bootstrap any application services.
- *
- * @return void
- */
-public function boot()
+public function register(): void
 {
-    $this->app[ExceptionHandler::class]->catch(function (InvalidOrderException $e, $handler) {
-        $handler->replace('type', 'order_exception')
-            ->replace('code', 1001);
-    });
+    $this->app->bind(MyCustomTransformer::class, static fn () => 'your binding logic');
+
+    $this->app->tag('api_error.exception_transformer', MyCustomTransformer::class);
 }
 ```
 
-## Content negotiation
+## Content Negotiation
 
 ### Forcing the JSON Response
 
@@ -163,12 +116,7 @@ While this is a good design practice, sometimes you may wish to attach the heade
 ```php
 use Jenky\Hades\Hades;
 
-/**
- * Bootstrap any application services.
- *
- * @return void
- */
-public function boot()
+public function boot(): void
 {
     Hades::forceJsonOutput();
 }
@@ -195,6 +143,14 @@ use Illuminate\Http\Request;
 Hades::forceJsonOutput(static function (Request $request) {
     return $request->is('api/v1/*');
 });
+```
+
+If your application is built solely for API use, you can configure the request to always return a JSON response.
+
+```php
+use Illuminate\Http\Request;
+
+Hades::forceJsonOutput(static fn () => true);
 ```
 
 ## Change log
