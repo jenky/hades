@@ -20,6 +20,24 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ### Security
 - Nothing -->
+## 3.0.0 - 2025-03-17
+
+This version is a complete rewrite using https://github.com/jenky/api-error
+
+### Deprecated
+
+- `Hades::errorFormat()`, use `hades.php` config instead.
+
+### Added
+
+- Laravel 12 support.
+
+### Removed
+
+- Drop support for Laravel 9.
+
+**Full Changelog**: https://github.com/jenky/hades/compare/2.2.0...3.0.0
+
 ## 2.2.0 - 2024-04-15
 
 ### Added
