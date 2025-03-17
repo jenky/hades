@@ -30,8 +30,6 @@ class HadesServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/hades.php', 'hades');
 
-        $this->app->afterResolving(Handler::class, self::handleExceptionResponse(...));
-
         /** @var Repository $config */
         $config = $this->app->make('config');
 
@@ -40,6 +38,9 @@ class HadesServiceProvider extends ServiceProvider
         $this->registerErrorFormatter($config);
 
         $this->registerResponseHandler($config);
+
+        $this->app->afterResolving(Handler::class, self::handleExceptionResponse(...));
+        $this->app->afterResolving(GenericErrorFormatter::class, static fn (GenericErrorFormatter $formatter) => self::setCustomErrorFormat($formatter, $config));
     }
 
     private function registerErrorFormatter(Repository $config): void
@@ -47,13 +48,12 @@ class HadesServiceProvider extends ServiceProvider
         $this->app->when([
             GenericErrorFormatter::class,
             Rfc7807ErrorFormatter::class,
-            ErrorFormatter::class,
         ])
             ->needs('$debug')
             ->give(static fn (Application $app) => $app->hasDebugModeEnabled());
 
         /** @var string $formatter */
-        $formatter = $config->get('hades.formatter', ErrorFormatter::class);
+        $formatter = $config->get('hades.formatter', GenericErrorFormatter::class);
 
         if (! \is_subclass_of($formatter, ErrorFormatterContract::class, true)) {
             throw new \InvalidArgumentException(sprintf('Error formatter must be instance of %s. %s given', ErrorFormatterContract::class, $formatter));
@@ -88,7 +88,7 @@ class HadesServiceProvider extends ServiceProvider
         $this->app->bind(ExceptionTransformer::class, ChainTransformer::class);
     }
 
-    protected static function handleExceptionResponse(Handler $handler, Application $app): void
+    private static function handleExceptionResponse(Handler $handler, Application $app): void
     {
         $responseHandler = $app->make(ResponseHandler::class);
 
@@ -104,6 +104,18 @@ class HadesServiceProvider extends ServiceProvider
 
             return $responseHandler->render($e, $request);
         });
+    }
+
+    private static function setCustomErrorFormat(GenericErrorFormatter $formatter, Repository $config): void
+    {
+        $format = $config->get('hades.format', [
+            'message' => '{title}',
+            'status' => '{status_code}',
+            'code' => '{code}',
+            'errors' => '{errors}',
+        ]);
+
+        $formatter->setFormat($format);
     }
 
     /**
